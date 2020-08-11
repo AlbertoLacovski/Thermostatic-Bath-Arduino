@@ -7,6 +7,7 @@ LiquidCrystal lcd(12, 11, 7, 6, 5, 4);
 const int oneWirePin = 13;
 const int zeroCrossPin = 2;
 const int cargaPin = 3;
+const int motorPin = 10;
 volatile long carga = 0;  // 0 a 100
 unsigned long time;
 unsigned long time1 =0;
@@ -31,6 +32,8 @@ void setup() {
   pinMode(cargaPin, OUTPUT);
   pinMode(8, INPUT);
   pinMode(9, INPUT);
+  pinMode(motorPin, OUTPUT);
+  analogWrite(motorPin, map(20, 0, 100, 0, 255));
   attachInterrupt(digitalPinToInterrupt(zeroCrossPin), zeroCross, RISING); //Fala a regra que tem que seguir
   sensors.begin();
   lcd.begin(16, 2);
