@@ -12,6 +12,7 @@ unsigned long time;
 unsigned long time1 =0;
 unsigned long time2 =0;
 unsigned long timeCT =0;
+int untilTurnOff = 10; //porcentagem antes de desligar
 long tCT = 0;
 
 float Tsp =0;
@@ -57,7 +58,7 @@ void loop() {
 }
 
 void zeroCross()  {
-  if (carga>=3){
+  if (carga>=untilTurnOff){
     tCT = 8333L*(100L-carga)/100L; //microsegundos que tem que esperar
     delayMicroseconds(tCT);
     digitalWrite (cargaPin,HIGH);
@@ -81,7 +82,8 @@ void atualizarLCD(String show){
 }
 
 float controle(){ //Retorna a porcentagem que a lampada deve ligar
-  float erro = Tsp  - T;
+  float Tcorr = Tsp + untilTurnOff/K[0]; //Temperatura corrigida
+  float erro = Tcorr  - T;
   float Ppart = K[0]*erro;
   float Ipart = ISoma + K[1]*erro*dt;
   float Dpart = K[2]*(erro-ErroPssado)/dt;
