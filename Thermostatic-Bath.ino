@@ -12,9 +12,11 @@ volatile long carga = 0;  // 0 a 100
 unsigned long time;
 unsigned long time1 =0;
 unsigned long time2 =0;
+unsigned long time3 =0;
 unsigned long timeCT =0;
 int untilTurnOff = 10; //porcentagem antes de desligar
 long tCT = 0;
+bool isPrint = true;
 
 float Tsp =0;
 float T = 0;
@@ -28,6 +30,7 @@ OneWire oneWire(oneWirePin);
 DallasTemperature sensors(&oneWire);
 
 void setup() {
+  Serial.begin(9600);
   pinMode(zeroCrossPin, INPUT);
   pinMode(cargaPin, OUTPUT);
   pinMode(8, INPUT);
@@ -58,6 +61,14 @@ void loop() {
       atualizarLCD(String(T)); //Mostra no LCD
 
   }
+  if((time-time3)>=(60*1000000)){
+    if(isPrint){
+      Serial.print(carga);
+      Serial.prinf(" ");
+      Serial.println(T);
+    }
+  }
+
 }
 
 void zeroCross()  {
