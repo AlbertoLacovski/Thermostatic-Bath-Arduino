@@ -18,9 +18,9 @@ int untilTurnOff = 10; //porcentagem antes de desligar
 long tCT = 0;
 bool isPrint = true;
 
-float Tsp =0;
+float Tsp =35;
 float T = 0;
-float K[] = {2, 0.0002, 0};
+float K[] = {3, 0.0002, 0};
 float ISoma = 0;
 float dt = 2; //em segundos
 float ErroPssado = 0; //usado na derivativa
@@ -62,9 +62,10 @@ void loop() {
 
   }
   if((time-time3)>=(60*1000000)){
+    time3=time;
     if(isPrint){
       Serial.print(carga);
-      Serial.prinf(" ");
+      Serial.print(" ");
       Serial.println(T);
     }
   }
@@ -97,7 +98,7 @@ void atualizarLCD(String show){
 
 float controle(){ //Retorna a porcentagem que a lampada deve ligar
   float Tcorr = Tsp + untilTurnOff/K[0]; //Temperatura corrigida
-  float erro = Tcorr  - T;
+  float erro = Tsp  - T;
   float Ppart = K[0]*erro;
   float Ipart = ISoma + K[1]*erro*dt;
   float Dpart = K[2]*(erro-ErroPssado)/dt;
