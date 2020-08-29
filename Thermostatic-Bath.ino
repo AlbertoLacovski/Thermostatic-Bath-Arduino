@@ -20,7 +20,7 @@ bool isPrint = true;
 
 float Tsp =35;
 float T = 0;
-float K[] = {3, 0.0002, 0};
+float K[] = {10, 0.2, 1};
 float ISoma = 0;
 float dt = 2; //em segundos
 float ErroPssado = 0; //usado na derivativa
@@ -98,19 +98,16 @@ void atualizarLCD(String show){
 
 float controle(){ //Retorna a porcentagem que a lampada deve ligar
   float Tcorr = Tsp + untilTurnOff/K[0]; //Temperatura corrigida
-  float erro = Tsp  - T;
+  float erro = Tsp  - Tcorr;
   float Ppart = K[0]*erro;
-  float Ipart = ISoma + K[1]*erro*dt;
+  float Ipart = ISoma + K[1]*(Tsp-T)*dt;
   float Dpart = K[2]*(erro-ErroPssado)/dt;
 
   ErroPssado = erro;
   ISoma = Ipart;
   float saida = Ppart + Ipart + Dpart;
-  if (saida>100){
-    saida = 100;
-  }
-  else if(saida<0){
-    saida =0;
+  if (saida>70){
+    saida = 70;
   }
   return saida;
 }
